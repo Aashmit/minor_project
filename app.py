@@ -19,10 +19,14 @@ fig=plt.figure(figsize=(12,6))
 plt.plot(df.Close)
 st.pyplot(fig)
 
-st.subheader("Closing Price vs Time Chart with 200MA")
+st.subheader("Closing Price vs Time Chart with 200MA and 100 MA")
 ma200=df.Close.rolling(200).mean()
+ma100=df.Close.rolling(100).mean()
 fig=plt.figure(figsize=(12,6))
-plt.plot(ma200,'g')
+plt.plot(df.Close,'b',label='Closing Price')
+plt.plot(ma200,'g',label='Moving Average for 200 days')
+plt.plot(ma100,'r',label='Moving Average for 100 days')
+plt.legend()
 plt.plot(df.Close)
 st.pyplot(fig)
 
@@ -46,6 +50,7 @@ final_df=past_100_days.append(data_testing,ignore_index=True)
 
 input_data=scaler.fit_transform(final_df)
 
+#PAST 100 DAYS 
 x_test=[]
 y_test=[]
 for i in range(100,input_data.shape[0]):
@@ -80,13 +85,12 @@ from sklearn.metrics import mean_squared_error,mean_absolute_error,mean_absolute
 def return_error(test,predicted):
     rmse = math.sqrt(mean_squared_error(test, predicted))
     mae=mean_absolute_error(test,predicted)
-    mape=mean_absolute_percentage_error(test,predicted)*100
-    return rmse,mae,mape
+    return rmse,mae
 
 rmse_LSTM=return_error(y_test,y_predicted)
 rmse_GRU=return_error(y_test,y_predicted2)
 error_df=pd.DataFrame(columns=('Model','RMSE'))
-error_data=[('LSTM',rmse_LSTM[0],rmse_LSTM[1],rmse_LSTM[2]),('GRU',rmse_GRU[0],rmse_GRU[1],rmse_GRU[2])]
-error_df=pd.DataFrame(error_data,columns=('Model','RMSE','MAE','MAPE'))
+error_data=[('LSTM',rmse_LSTM[0],rmse_LSTM[1]),('GRU',rmse_GRU[0],rmse_GRU[1])]
+error_df=pd.DataFrame(error_data,columns=('Model','RMSE','MAE'))
 st.subheader("Error Evaluation")
 st.write(error_df)
