@@ -1,5 +1,0 @@
-implementation
-model training 
-quantitative as well as qualitative 
-GRU model 
-comparision between LSTM and GRU 
