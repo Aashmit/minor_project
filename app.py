@@ -47,6 +47,7 @@ data_training_array=scaler.fit_transform(data_training)
 #Load Model
 model=load_model('keras_model.h5')
 gru_model=load_model('GRU.h5')
+
 past_100_days=data_training.tail(100)
 final_df=past_100_days.append(data_testing,ignore_index=True)
 
@@ -62,6 +63,7 @@ x_test,y_test=np.array(x_test),np.array(y_test)
 
 y_predicted=model.predict(x_test)
 y_predicted2=gru_model.predict(x_test)
+
 scaler=scaler.scale_
 scale_factor=1/scaler[0]
 y_predicted=y_predicted*scale_factor
